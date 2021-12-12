@@ -19,9 +19,10 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    parse_file(file);
-
-    print_1st_row();
+    Parser parser = new_parser(file);
+    parser = advance(parser);
+    parser = advance(parser);
+    parser = advance(parser);
 
     fclose(file);
 }

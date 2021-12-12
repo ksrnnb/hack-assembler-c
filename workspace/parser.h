@@ -1,5 +1,13 @@
+#include <stdbool.h>
 #include <stdio.h>
 
-extern void parse_file(FILE *file);
+typedef struct Parser {
+    FILE *file;
+    char *current;
+    bool done;
+} Parser;
 
-extern void print_1st_row();
+Parser new_parser(FILE *file);
+
+extern Parser advance(Parser parser);
+extern bool has_more_commands(Parser parser);
