@@ -3,13 +3,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "utils.h"
+
 struct Parser {
     FILE *file;
     char *current;
     bool done;
 };
 
-#define BUFFER_SIZE 256
+#define ONE_LINE_LIMIT 256
 
 #define A_COMMAND 1
 #define C_COMMAND 2
@@ -26,9 +28,20 @@ struct Parser new_parser(FILE *file) {
 
 bool has_more_commands(struct Parser parser) { return !parser.done; }
 
+bool is_comment(char *token) { return token[0] == '/' && token[1] == '/'; }
+
+bool is_comamnd(char *token) {
+    // 改行の場合は、trim済みなので\0となる
+    if (token[0] == '\0') {
+        return false;
+    }
+
+    return !is_comment(token);
+}
+
 struct Parser advance(struct Parser parser) {
-    char buf[BUFFER_SIZE];
-    char *result = fgets(buf, BUFFER_SIZE, parser.file);
+    char buf[ONE_LINE_LIMIT] = "";
+    char *result = fgets(buf, ONE_LINE_LIMIT, parser.file);
 
     if (result == NULL) {
         printf("file is empty\n");
@@ -36,10 +49,18 @@ struct Parser advance(struct Parser parser) {
         return parser;
     }
 
-    printf("%s", buf);
+    lntrim(buf);
+    char token[ONE_LINE_LIMIT] = "";
+    trim(token, buf, ' ');
+
+    if (!is_comamnd(token)) {
+        parser = advance(parser);
+        return parser;
+    }
+
+    printf("token: %s\n", token);
 
     parser.current = buf;
-
     return parser;
 }
 

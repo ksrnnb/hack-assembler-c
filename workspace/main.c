@@ -20,9 +20,10 @@ int main(int argc, char *argv[]) {
     }
 
     Parser parser = new_parser(file);
-    parser = advance(parser);
-    parser = advance(parser);
-    parser = advance(parser);
+
+    while (has_more_commands(parser)) {
+        parser = advance(parser);
+    }
 
     fclose(file);
 }
