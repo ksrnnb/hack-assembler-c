@@ -60,10 +60,29 @@ struct Parser advance(struct Parser parser) {
 
     printf("token: %s\n", token);
 
-    parser.current = buf;
+    parser.current = token;
     return parser;
 }
 
-int command_type() { return A_COMMAND; }
+// TODO: 入力が正しいことを前提としている。入力が正しくない場合の処理が必要。
+int command_type(struct Parser parser) {
+    if (parser.current[0] == '@') {
+        return A_COMMAND;
+    }
 
-char *symbol() { return "xxx"; }
+    if (parser.current[0] == '(') {
+        return L_COMMAND;
+    }
+
+    return C_COMMAND;
+}
+
+char *symbol(struct Parser parser) {
+    if (command_type(parser) == A_COMMAND) {
+        // do something
+    }
+
+    if (command_type(parser) == L_COMMAND) {
+        // do something
+    }
+}
