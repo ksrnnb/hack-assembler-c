@@ -77,12 +77,46 @@ int command_type(struct Parser parser) {
     return C_COMMAND;
 }
 
-char *symbol(struct Parser parser) {
+void getSymbolA(char *dest, char *command);
+void getSymbolC(char *dest, char *command);
+
+#define COMMAND_SIZE 16
+
+void symbol(char *dest, struct Parser parser) {
+    if (strlen(dest) > COMMAND_SIZE) {
+        die("symbol is too long");
+    }
+
     if (command_type(parser) == A_COMMAND) {
-        // do something
+        getSymbolA(dest, parser.current);
+        return;
     }
 
     if (command_type(parser) == L_COMMAND) {
-        // do something
+        getSymbolC(dest, parser.current);
+        return;
+    }
+
+    die("command type is invalid");
+}
+
+// はじめの@を取り除く
+void getSymbolA(char *dest, char *command) {
+    for (int i = 0; i < strlen(command) - 1; i++) {
+        dest[i] = command[i + 1];
+    }
+
+    dest[strlen(dest) - 1] = '\0';
+}
+
+void getSymbolC(char *dest, char *command) {
+    // "(" と ")" を除く
+    for (int i = 0; i < strlen(command) - 1; i++) {
+        if (command[i + 1] == ')') {
+            dest[i] = '\0';
+            break;
+        }
+
+        dest[i] = command[i + 1];
     }
 }

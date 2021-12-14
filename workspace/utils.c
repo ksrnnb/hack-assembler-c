@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 // 文字が一致しているかどうか
@@ -34,4 +35,10 @@ void lntrim(char *str) {
     if (p != NULL) {
         *p = '\0';
     }
+}
+
+// エラー終了処理
+void die(char *message) {
+    fprintf(stderr, "%s\n", message);
+    exit(1);
 }
