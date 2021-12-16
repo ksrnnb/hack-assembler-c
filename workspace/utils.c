@@ -10,8 +10,10 @@ bool is_matched(char *a, char *b) { return strcmp(a, b) == 0; }
 void split(char *dest[], char *str, char *delimiter) {
     char *token = strtok(str, delimiter);
 
+    int j = 0;
     for (int i = 0; token != NULL; i++) {
         dest[i] = token;
+        j++;
         token = strtok(NULL, delimiter);
     }
 }

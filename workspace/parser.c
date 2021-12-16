@@ -120,3 +120,98 @@ void getSymbolC(char *dest, char *command) {
         dest[i] = command[i + 1];
     }
 }
+
+// C命令のdestニーモニックを返す
+// M=M+1の左辺
+void dest(char *char_dest, struct Parser parser) {
+    if (command_type(parser) != C_COMMAND) {
+        die("command should be c command when you use dest()");
+    }
+
+    char *buf[2] = {NULL};
+    split(buf, parser.current, "=");
+
+    if (buf[0] == NULL) {
+        char_dest = NULL;  // TODO: 文字がいいののか、NULLがいいのか確認
+        return;
+    }
+
+    char_dest = buf[0];
+}
+
+void compJmp(char *dest, struct Parser parser);
+
+// C命令のcompニーモニックを返す
+// M=M+1の右辺
+void comp(char *dest, struct Parser parser) {
+    if (command_type(parser) != C_COMMAND) {
+        die("command should be c command when you use comp()");
+    }
+
+    char *buf[2] = {NULL};
+    split(buf, parser.current, "=");
+
+    if (buf[0] == NULL) {
+        // =でsplitできなかった場合は、JMP
+        compJmp(dest, parser);
+        return;
+    }
+
+    dest = buf[0];
+}
+
+// JMPの場合
+void compJmp(char *dest, struct Parser parser) {
+    if (command_type(parser) != C_COMMAND) {
+        die("command should be c command when you use compJmp()");
+    }
+
+    char *buf[2] = {NULL};
+    split(buf, parser.current, ";");
+
+    if (buf[0] == NULL || buf[1] == NULL) {
+        dest = NULL;
+        return;
+    }
+
+    // TODO: 右辺に応じて、式を変える
+    // switch (buf[1]) {
+    //     case "JGT":
+    //         // 文字を足す
+    //         dest = buf[0] + ">0";
+    //         break;
+    //     case "JEQ":
+    //         break;
+    //     case "JGE":
+    //         break;
+    //     case "JLT":
+    //         break;
+    //     case "JNE":
+    //         break;
+    //     case "JLE":
+    //         break;
+    //     case "JMP":
+    //         break;
+    //     default:
+    //         dest = NULL;
+    //         break;
+    // }
+}
+
+// C命令のjumpニーモニックを返す
+// D;JMPの右辺
+void jump(char *dest, struct Parser parser) {
+    if (command_type(parser) != C_COMMAND) {
+        die("command should be c command when you use compJmp()");
+    }
+
+    char *buf[2] = {NULL};
+    split(buf, parser.current, ";");
+
+    if (buf[0] == NULL || buf[1] == NULL) {
+        dest = NULL;
+        return;
+    }
+
+    dest = buf[1];
+}
