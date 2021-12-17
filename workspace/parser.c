@@ -174,28 +174,32 @@ void compJmp(char *dest, struct Parser parser) {
         return;
     }
 
-    // TODO: 右辺に応じて、式を変える
-    // switch (buf[1]) {
-    //     case "JGT":
-    //         // 文字を足す
-    //         dest = buf[0] + ">0";
-    //         break;
-    //     case "JEQ":
-    //         break;
-    //     case "JGE":
-    //         break;
-    //     case "JLT":
-    //         break;
-    //     case "JNE":
-    //         break;
-    //     case "JLE":
-    //         break;
-    //     case "JMP":
-    //         break;
-    //     default:
-    //         dest = NULL;
-    //         break;
-    // }
+    switch (buf[1]) {
+        case "JGT":
+            dest = "JGT";
+            break;
+        case "JEQ":
+            dest = "JEQ";
+            break;
+        case "JGE":
+            dest = "JGE";
+            break;
+        case "JLT":
+            dest = "JLT";
+            break;
+        case "JNE":
+            dest = "JNE";
+            break;
+        case "JLE":
+            dest = "JLE";
+            break;
+        case "JMP":
+            dest = "JMP";
+            break;
+        default:
+            dest = NULL;
+            break;
+    }
 }
 
 // C命令のjumpニーモニックを返す
