@@ -44,3 +44,22 @@ void die(char *message) {
     fprintf(stderr, "%s\n", message);
     exit(1);
 }
+
+// 10進数から2進数に変換する
+void decimalToBinary(char *dest, int size, char *decimal) {
+    int max = (1 << 15) - 1;  // 2^15 - 1
+    if (atoi(decimal) > max) {
+        return;
+    }
+
+    int quotient = atoi(decimal);
+    fprintf(stdout, "%d\n", quotient);
+
+    for (int i = 1; i < size; i++) {
+        int remainer = quotient % 2;
+        dest[size - i - 1] = remainer ? '1' : '0';
+
+        quotient = quotient / 2;
+    }
+    dest[size - 1] = '\0';
+}

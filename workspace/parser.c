@@ -13,9 +13,9 @@ struct Parser {
 
 #define ONE_LINE_LIMIT 256
 
-#define A_COMMAND 1
-#define C_COMMAND 2
-#define L_COMMAND 3
+const int A_COMMAND = 1;
+const int C_COMMAND = 2;
+const int L_COMMAND = 3;
 
 struct Parser new_parser(FILE *file) {
     struct Parser parser;
@@ -44,7 +44,6 @@ struct Parser advance(struct Parser parser) {
     char *result = fgets(buf, ONE_LINE_LIMIT, parser.file);
 
     if (result == NULL) {
-        printf("file is empty\n");
         parser.done = true;
         return parser;
     }
@@ -57,8 +56,6 @@ struct Parser advance(struct Parser parser) {
         parser = advance(parser);
         return parser;
     }
-
-    printf("token: %s\n", token);
 
     parser.current = token;
     return parser;
@@ -174,32 +171,43 @@ void compJmp(char *dest, struct Parser parser) {
         return;
     }
 
-    switch (buf[1]) {
-        case "JGT":
-            dest = "JGT";
-            break;
-        case "JEQ":
-            dest = "JEQ";
-            break;
-        case "JGE":
-            dest = "JGE";
-            break;
-        case "JLT":
-            dest = "JLT";
-            break;
-        case "JNE":
-            dest = "JNE";
-            break;
-        case "JLE":
-            dest = "JLE";
-            break;
-        case "JMP":
-            dest = "JMP";
-            break;
-        default:
-            dest = NULL;
-            break;
+    if (is_matched(buf[1], "JGT")) {
+        dest = "JGT";
+        return;
     }
+
+    if (is_matched(buf[1], "JEQ")) {
+        dest = "JEQ";
+        return;
+    }
+
+    if (is_matched(buf[1], "JGE")) {
+        dest = "JGE";
+        return;
+    }
+
+    if (is_matched(buf[1], "JLT")) {
+        dest = "JLT";
+        return;
+    }
+
+    if (is_matched(buf[1], "JNE")) {
+        dest = "JNE";
+        return;
+    }
+
+    if (is_matched(buf[1], "JLE")) {
+        dest = "JLE";
+        return;
+    }
+
+    if (is_matched(buf[1], "JMP")) {
+        dest = "JMP";
+        return;
+    }
+
+    dest = NULL;
+    return;
 }
 
 // C命令のjumpニーモニックを返す

@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "parser.h"
+#include "utils.h"
 
 // 関数を利用する前に宣言しておかないと
 // `implicit declaration of function`のワーニングが発生する
@@ -20,9 +21,21 @@ int main(int argc, char *argv[]) {
     }
 
     Parser parser = new_parser(file);
+    FILE *outFile = fopen("result.hack", "w+");
 
     while (has_more_commands(parser)) {
         parser = advance(parser);
+
+        if (command_type(parser) == A_COMMAND) {
+            int symbol_size = 16;
+            int buffer_size = 16;
+            char s[symbol_size];
+            char buf[buffer_size];
+
+            symbol(s, parser);
+            decimalToBinary(buf, sizeof buf, s);
+            fprintf(outFile, "0%s\n", buf);
+        }
     }
 
     fclose(file);
