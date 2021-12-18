@@ -8,7 +8,17 @@ bool is_matched(char *a, char *b) { return strcmp(a, b) == 0; }
 
 // 指定したデリミタで文字列を分割する
 void split(char *dest[], char *str, char *delimiter) {
-    char *token = strtok(str, delimiter);
+    // 非破壊にするため、コピーを作成
+    char copyStr[strlen(str)];
+    for (int i = 0; i <= strlen(str); i++) {
+        copyStr[i] = str[i];
+    }
+
+    char *token = strtok(copyStr, delimiter);
+
+    if (is_matched(token, str)) {
+        return;
+    }
 
     int j = 0;
     for (int i = 0; token != NULL; i++) {
@@ -46,14 +56,13 @@ void die(char *message) {
 }
 
 // 10進数から2進数に変換する
-void decimalToBinary(char *dest, int size, char *decimal) {
+void decimalToBinary(char *dest, int size, int decimal) {
     int max = (1 << 15) - 1;  // 2^15 - 1
-    if (atoi(decimal) > max) {
+    if (decimal > max) {
         return;
     }
 
-    int quotient = atoi(decimal);
-    fprintf(stdout, "%d\n", quotient);
+    int quotient = decimal;
 
     for (int i = 1; i < size; i++) {
         int remainer = quotient % 2;

@@ -6,4 +6,4 @@ extern void trim(char *dest, char *str, int delimiter);
 extern void die(char *message);
 
 extern bool is_matched(char *a, char *b);
-extern void decimalToBinary(char *dest, int size, char *decimal);
+extern void decimalToBinary(char *dest, int size, int decimal);

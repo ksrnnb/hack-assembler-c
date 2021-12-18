@@ -14,6 +14,9 @@ extern bool has_more_commands(Parser parser);
 extern int command_type(struct Parser parser);
 extern void symbol(char *dest, struct Parser parser);
 
+extern void dest(char *char_dest, struct Parser parser);
+extern void comp(char *dest, struct Parser parser);
+extern void jump(char *dest, struct Parser parser);
 extern int A_COMMAND;
 extern int C_COMMAND;
 extern int L_COMMAND;

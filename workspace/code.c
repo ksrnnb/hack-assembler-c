@@ -10,7 +10,7 @@ int code_dest(char *dest) {
     if (is_matched(dest, "AM")) return 0b101;
     if (is_matched(dest, "AD")) return 0b110;
     if (is_matched(dest, "AMD")) return 0b111;
-    if (dest == NULL) return 0b000;
+    if (dest[0] == '\0') return 0b000;
 
     die("dest mnemonic is invalid");
 }
@@ -56,7 +56,7 @@ int code_jump(char *jump) {
     if (is_matched(jump, "JNE")) return 0b101;
     if (is_matched(jump, "JLE")) return 0b110;
     if (is_matched(jump, "JMP")) return 0b111;
-    if (jump == NULL) return 0b000;
+    if (jump[0] == '\0') return 0b000;
 
     die("jump mnemonic is invalid");
 }

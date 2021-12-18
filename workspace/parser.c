@@ -129,11 +129,13 @@ void dest(char *char_dest, struct Parser parser) {
     split(buf, parser.current, "=");
 
     if (buf[0] == NULL) {
-        char_dest = NULL;  // TODO: 文字がいいののか、NULLがいいのか確認
+        char_dest[0] = '\0';
         return;
     }
 
-    char_dest = buf[0];
+    for (int i = 0; i <= strlen(buf[0]); i++) {
+        char_dest[i] = buf[0][i];
+    }
 }
 
 void compJmp(char *dest, struct Parser parser);
@@ -148,13 +150,15 @@ void comp(char *dest, struct Parser parser) {
     char *buf[2] = {NULL};
     split(buf, parser.current, "=");
 
-    if (buf[0] == NULL) {
+    if (buf[0] == NULL || buf[1] == NULL) {
         // =でsplitできなかった場合は、JMP
         compJmp(dest, parser);
         return;
     }
 
-    dest = buf[0];
+    for (int i = 0; i <= strlen(buf[1]); i++) {
+        dest[i] = buf[1][i];
+    }
 }
 
 // JMPの場合
@@ -167,16 +171,21 @@ void compJmp(char *dest, struct Parser parser) {
     split(buf, parser.current, ";");
 
     if (buf[0] == NULL || buf[1] == NULL) {
-        dest = NULL;
+        dest[0] = '\0';
         return;
     }
 
     if (is_matched(buf[1], "JGT")) {
-        dest = "JGT";
+        dest[0] = 'j';
+        dest[1] = 'G';
+        dest[2] = 'T';
         return;
     }
 
     if (is_matched(buf[1], "JEQ")) {
+        // TODO: JGTと同様になるよう修正
+        // 新しくポインタが割り当てられてしまうため
+        // もしくは、文字列を返す関数を考える。。。
         dest = "JEQ";
         return;
     }
@@ -206,7 +215,7 @@ void compJmp(char *dest, struct Parser parser) {
         return;
     }
 
-    dest = NULL;
+    dest[0] = '\0';
     return;
 }
 
@@ -221,9 +230,11 @@ void jump(char *dest, struct Parser parser) {
     split(buf, parser.current, ";");
 
     if (buf[0] == NULL || buf[1] == NULL) {
-        dest = NULL;
+        dest[0] = '\0';
         return;
     }
 
-    dest = buf[1];
+    for (int i = 0; i <= strlen(buf[1]); i++) {
+        dest[i] = buf[1][i];
+    }
 }
